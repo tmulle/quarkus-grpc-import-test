@@ -68,10 +68,94 @@ any modification to the `import` statments in our protos.
 We use the `maven-dependency` plugin to download the artifact with out protos in it and expand them to a directory under the target folder.
 We then configure the protoc compiler to include the target folder so we can access those imported protos.
  
-
+*Maven Dependency Plugin*
 ```xml
-<groupId>com.github.os72</groupId>
-<artifactId>protoc-jar-maven-plugin</artifactId>
+ <!-- Extract the *.proto files from Nexus so we can generate our
+            class files from them -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>${plugin.mvn-dependecy.version}</version>
+                <executions>
+                    <execution>
+                        <id>unpack</id>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.acme</groupId>
+                                    <artifactId>quarkus-proto-test</artifactId>
+                                    <version>${quarkus-proto.version}</version>
+                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${project.build.directory}/protobuf/base</outputDirectory>
+                                    <includes>**/*.proto</includes>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>unit-test-extraction</id>
+                        <phase>generate-test-resources</phase>
+                        <goals>
+                            <goal>unpack</goal>
+                        </goals>
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>org.acme</groupId>
+                                    <artifactId>quarkus-proto-test</artifactId>
+                                    <version>${quarkus-proto.version}</version>
+                                    <type>jar</type>
+                                    <overWrite>true</overWrite>
+                                    <outputDirectory>${project.build.directory}/test-classes/base</outputDirectory>
+                                </artifactItem>
+                            </artifactItems>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                        <configuration>
+                            <prependGroupId>true</prependGroupId>
+                            <includeScope>runtime</includeScope>
+                            <outputDirectory>${project.build.directory}/dependency</outputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+```
+*Protoc Compiler*
+```xml
+<plugin>
+    <groupId>com.github.os72</groupId>
+    <artifactId>protoc-jar-maven-plugin</artifactId>
+    <version>${plugin.protocompiler.version}</version>
+    <executions>
+        <execution>
+            <phase>generate-sources</phase>
+            <goals>
+                <goal>run</goal>
+            </goals>
+            <configuration>
+                <protocVersion>${protoc.version}</protocVersion>
+                <includeDirectories>
+                    <includeDirectory>${project.build.directory}/protobuf/base/protobuf</includeDirectory>
+                </includeDirectories>
+                <inputDirectories>
+                    <inputDirectory>${project.basedir}/src/main/proto/maps</inputDirectory>
+                    <inputDirectory>${project.basedir}/src/main/proto</inputDirectory>
+                </inputDirectories>
+                <outputDirectory>${project.build.directory}/generated-sources/protobuf</outputDirectory>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
 ```
 
 ### New way using Quarkus
