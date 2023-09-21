@@ -1,6 +1,6 @@
-# grpc-import-test
+# grpc-import-test:protobuf-maven-plugin
 
-This project is used to demonstrate that there might be a problem with the built in gRPC compiler in
+This project is used to demonstrate that there might be a problem with the `protobuf-maven-plugin` in
 Quarkus and how it handles *.proto files in subdirectories.
 
 This is a sample setup based on a real world scenario at our company since I couldn't post the real setup.
@@ -25,164 +25,113 @@ mvn clean compile
 
 Output
 ```bash
-(base) ➜  grpc-import-test git:(main) mvn clean compile                                                                                                                                                                                                                                                  
-[INFO] Scanning for projects...                                                                                                                                                                                                                                                                          
-[INFO]                                                                                                                                                                                                                                                                                                   
-[INFO] ---------------------< org.acme:grpc-import-test >----------------------                                                                                                                                                                                                                          
-[INFO] Building grpc-import-test 1.0.0-SNAPSHOT                                                                                                                                                                                                                                                          
-[INFO]   from pom.xml                                                                                                                                                                                                                                                                                    
+(base) ➜  grpc-import-test git:(protobuf-maven-plugin-test) mvn clean compile                                                                                                                                                                                                                         
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Detecting the operating system and CPU architecture
+[INFO] ------------------------------------------------------------------------
+[INFO] os.detected.name: osx
+[INFO] os.detected.arch: aarch_64
+[INFO] os.detected.bitness: 64
+[INFO] os.detected.version: 13.5
+[INFO] os.detected.version.major: 13
+[INFO] os.detected.version.minor: 5
+[INFO] os.detected.classifier: osx-aarch_64
+[INFO] 
+[INFO] ---------------------< org.acme:grpc-import-test >----------------------
+[INFO] Building grpc-import-test 1.0.0-SNAPSHOT
+[INFO]   from pom.xml
 [INFO] --------------------------------[ jar ]---------------------------------
 [INFO] 
 [INFO] --- clean:3.2.0:clean (default-clean) @ grpc-import-test ---
+[INFO] Deleting /Users/tmulle/NetBeansProjects/grpc-import-test/target
 [INFO] 
-[INFO] --- resources:3.3.1:resources (default-resources) @ grpc-import-test ---
-[INFO] Copying 2 resources from src/main/resources to target/classes
-[INFO] 
-[INFO] --- quarkus:3.4.1:generate-code (default) @ grpc-import-test ---
-base.proto: File not found.
+[INFO] --- protobuf:0.6.1:compile (compile) @ grpc-import-test ---
+[INFO] Building protoc plugin: quarkus-grpc-protoc-plugin
+[INFO] Compiling 1 proto file(s) to /Users/tmulle/NetBeansProjects/grpc-import-test/target/generated-sources/protobuf/java
+[ERROR] PROTOC FAILED: base.proto: File not found.
 extended.proto:11:1: Import "base.proto" was not found or had errors.
 extended.proto:15:5: "org.acme.protos.base.User" is not defined.
 extended.proto:16:5: "org.acme.protos.base.Address" is not defined.
 extended.proto:23:5: "org.acme.protos.base.Address" is not defined.
+
+[ERROR] /Users/tmulle/NetBeansProjects/grpc-import-test/src/main/proto/extended.proto [0:0]: base.proto: File not found.
+extended.proto:11:1: Import "base.proto" was not found or had errors.
+extended.proto:15:5: "org.acme.protos.base.User" is not defined.
+extended.proto:16:5: "org.acme.protos.base.Address" is not defined.
+extended.proto:23:5: "org.acme.protos.base.Address" is not defined.
+
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD FAILURE
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  1.587 s
-[INFO] Finished at: 2023-09-21T16:20:23-04:00
+[INFO] Total time:  0.886 s
+[INFO] Finished at: 2023-09-21T17:23:18-04:00
 [INFO] ------------------------------------------------------------------------
-[ERROR] Failed to execute goal io.quarkus.platform:quarkus-maven-plugin:3.4.1:generate-code (default) on project grpc-import-test: Quarkus code generation phase has failed: InvocationTargetException: Failed to generate Java classes from proto files: [/Users/tmulle/NetBeansProjects/grpc-import-test/src/main/proto/extended.proto, /Users/tmulle/NetBeansProjects/grpc-import-test/target/protoc-protos-from-dependencies/a037c3d013f4ac2e4ee551e85514d61e5497c4b6/protobuf/role.proto, /Users/tmulle/NetBeansProjects/grpc-import-test/target/protoc-protos-from-dependencies/a037c3d013f4ac2e4ee551e85514d61e5497c4b6/protobuf/base.proto] to /Users/tmulle/NetBeansProjects/grpc-import-test/target/generated-sources/grpc with command /Users/tmulle/NetBeansProjects/grpc-import-test/target/com.google.protobuf-protoc-osx-aarch_64-exe -I=/Users/tmulle/NetBeansProjects/grpc-import-test/target/protoc-dependencies/2d160609fb74c459975eca766b93d1dc5316867f -I=/Users/tmulle/NetBeansProjects/grpc-import-test/target/protoc-protos-from-dependencies/a037c3d013f4ac2e4ee551e85514d61e5497c4b6 -I=/Users/tmulle/NetBeansProjects/grpc-import-test/src/main/proto --plugin=protoc-gen-grpc=/Users/tmulle/NetBeansProjects/grpc-import-test/target/io.grpc-protoc-gen-grpc-java-osx-aarch_64-exe --plugin=protoc-gen-q-grpc=/Users/tmulle/NetBeansProjects/grpc-import-test/target/quarkus-grpc3201600090399120494.sh --q-grpc_out=/Users/tmulle/NetBeansProjects/grpc-import-test/target/generated-sources/grpc --grpc_out=/Users/tmulle/NetBeansProjects/grpc-import-test/target/generated-sources/grpc --java_out=/Users/tmulle/NetBeansProjects/grpc-import-test/target/generated-sources/grpc /Users/tmulle/NetBeansProjects/grpc-import-test/src/main/proto/extended.proto /Users/tmulle/NetBeansProjects/grpc-import-test/target/protoc-protos-from-dependencies/a037c3d013f4ac2e4ee551e85514d61e5497c4b6/protobuf/role.proto /Users/tmulle/NetBeansProjects/grpc-import-test/target/protoc-protos-from-dependencies/a037c3d013f4ac2e4ee551e85514d61e5497c4b6/protobuf/base.proto -> [Help 1]
+[ERROR] Failed to execute goal org.xolstice.maven.plugins:protobuf-maven-plugin:0.6.1:compile (compile) on project grpc-import-test: protoc did not exit cleanly. Review output for more information. -> [Help 1]
 [ERROR] 
 [ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
 [ERROR] Re-run Maven using the -X switch to enable full debug logging.
 [ERROR] 
 [ERROR] For more information about the errors and possible solutions, please read the following articles:
-[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException
-```
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
 
-### What we need to happen
-
-### Past way of doing things...
-Using other grpc maven plugins like `com.github.os72` combined with the `maven-dependency` plugin we can get the protos building correctly without 
-any modification to the `import` statments in our protos.
-
-We use the `maven-dependency` plugin to download the artifact with out protos in it and expand them to a directory under the target folder.
-We then configure the protoc compiler to include the target folder so we can access those imported protos.
- 
-*Maven Dependency Plugin*
-```xml
- <!-- Extract the *.proto files from Nexus so we can generate our
-            class files from them -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-dependency-plugin</artifactId>
-                <version>${plugin.mvn-dependecy.version}</version>
-                <executions>
-                    <execution>
-                        <id>unpack</id>
-                        <phase>generate-sources</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>org.acme</groupId>
-                                    <artifactId>quarkus-proto-test</artifactId>
-                                    <version>${quarkus-proto.version}</version>
-                                    <type>jar</type>
-                                    <overWrite>true</overWrite>
-                                    <outputDirectory>${project.build.directory}/protobuf/base</outputDirectory>
-                                    <includes>**/*.proto</includes>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <id>unit-test-extraction</id>
-                        <phase>generate-test-resources</phase>
-                        <goals>
-                            <goal>unpack</goal>
-                        </goals>
-                        <configuration>
-                            <artifactItems>
-                                <artifactItem>
-                                    <groupId>org.acme</groupId>
-                                    <artifactId>quarkus-proto-test</artifactId>
-                                    <version>${quarkus-proto.version}</version>
-                                    <type>jar</type>
-                                    <overWrite>true</overWrite>
-                                    <outputDirectory>${project.build.directory}/test-classes/base</outputDirectory>
-                                </artifactItem>
-                            </artifactItems>
-                        </configuration>
-                    </execution>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>copy-dependencies</goal>
-                        </goals>
-                        <configuration>
-                            <prependGroupId>true</prependGroupId>
-                            <includeScope>runtime</includeScope>
-                            <outputDirectory>${project.build.directory}/dependency</outputDirectory>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-```
-*Protoc Compiler*
-```xml
-<plugin>
-    <groupId>com.github.os72</groupId>
-    <artifactId>protoc-jar-maven-plugin</artifactId>
-    <version>${plugin.protocompiler.version}</version>
-    <executions>
-        <execution>
-            <phase>generate-sources</phase>
-            <goals>
-                <goal>run</goal>
-            </goals>
-            <configuration>
-                <protocVersion>${protoc.version}</protocVersion>
-                <includeDirectories>
-                    <includeDirectory>${project.build.directory}/protobuf/base/protobuf</includeDirectory>
-                </includeDirectories>
-                <inputDirectories>
-                    <inputDirectory>${project.basedir}/src/main/proto/maps</inputDirectory>
-                    <inputDirectory>${project.basedir}/src/main/proto</inputDirectory>
-                </inputDirectories>
-                <outputDirectory>${project.build.directory}/generated-sources/protobuf</outputDirectory>
-            </configuration>
-        </execution>
-    </executions>
-</plugin>
 ```
 
 ### New way using Quarkus
 Since this is a new project and I wanted to use Quarkus/gRPC I decided to use the built in compiler specified in the docs.
 
-I read https://quarkus.io/guides/grpc-getting-started
+I read https://quarkus.io/guides/grpc-getting-started#protobuf-maven-plugin
 
 After setting things up and finally getting the external jar to download automatically it appears that there is no way to configure the protoc
 compiler to go into a subfolder of the expanded artifact.
 
-For example, using the following properties in the `application.properties` to pull down the protos from maven, I can see the files in the `target` folder
-under a random generated name and under that folder a folder called `protobuf` with our protos.
+*protobuf-maven config*
+```xml
+ <plugin>
+    <groupId>org.xolstice.maven.plugins</groupId>
+    <artifactId>protobuf-maven-plugin</artifactId>      
+    <version>0.6.1</version>
+    <configuration>
+        <protocArtifact>com.google.protobuf:protoc:${protoc.version}:exe:${os.detected.classifier}</protocArtifact> 
+        <pluginId>grpc-java</pluginId>
+        <pluginArtifact>io.grpc:protoc-gen-grpc-java:${grpc.version}:exe:${os.detected.classifier}</pluginArtifact>
+        <protocPlugins>
+            <protocPlugin>
+                <id>quarkus-grpc-protoc-plugin</id>
+                <groupId>io.quarkus</groupId>
+                <artifactId>quarkus-grpc-protoc-plugin</artifactId>
+                <version>3.4.1</version>
+                <mainClass>io.quarkus.grpc.protoc.plugin.MutinyGrpcGenerator</mainClass>
+            </protocPlugin>
+        </protocPlugins>
+<!--                    <includes>
+            <include>${project.build.outputDirectory}/**/*.proto</include>
+        </includes>
+        <protoSourceRoot>src/main/proto</protoSourceRoot>-->
+    </configuration>
+    <executions>
+        <execution>
+            <id>compile</id>
+            <goals>
+                <goal>compile</goal>
+                <goal>compile-custom</goal>
+            </goals>
+        </execution>
+        <execution>
+            <id>test-compile</id>
+            <goals>
+                <goal>test-compile</goal>
+                <goal>test-compile-custom</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+```
 
-ie. 
-```
-grpc-import-test
-/target
- /hfkdhjgsfdg748678
-  /protobuf
-    base.proto
-    role.proto
-```
-```
-#quarkus.generate-code.grpc.scan-for-imports=org.acme:quarkus-proto-test
-quarkus.generate-code.grpc.scan-for-proto=org.acme:quarkus-proto-test
-quarkus.generate-code.grpc.scan-for-proto-includes."org.acme\:quarku-proto-test"=protobuf/**
-```
+Using the configuration above causes the protos to be found in the main project but not in the dependency included in the pom.
+
+The files appear under the `protoc-dependencies` folder under a random name and `protobuf` folder.
+
 What we need to be able to configure is go into the `protobuf` folder and all the protos under that folder.
 
 What appears to be happening is that the config in the properties file is including the top level folder when in reality we want to ignore it and
@@ -217,47 +166,76 @@ message Company {
 }
 ```
 
-Using the old way with the other plugin, when we told it to use the `protobuf` folder as an include it worked fine.
-But the compiler in quarkus is throwing an error.
-
 If I change the import in the file to `import "protobuf/base.proto"` the compile finds the `base.proto` BUT then any imports inside
 the `base.proto` fail.
 
 ```bash
-[INFO] Scanning for projects...                                                                                                                                                                                                                                                                          
-[INFO]                                                                                                                                                                                                                                                                                                   
-[INFO] ---------------------< org.acme:grpc-import-test >----------------------                                                                                                                                                                                                                          
-[INFO] Building grpc-import-test 1.0.0-SNAPSHOT                                                                                                                                                                                                                                                          
-[INFO]   from pom.xml                                                                                                                                                                                                                                                                                    
-[INFO] --------------------------------[ jar ]---------------------------------                                                                                                                                                                                                                          
-[INFO]                                                                                                                                                                                                                                                                                                   
-[INFO] --- clean:3.2.0:clean (default-clean) @ grpc-import-test ---                                                                                                                                                                                                                                      
-[INFO] Deleting /Users/tmulle/NetBeansProjects/grpc-import-test/target                                                                                                                                                                                                                                   
-[INFO]                                                                                                                                                                                                                                                                                                   
-[INFO] --- resources:3.3.1:resources (default-resources) @ grpc-import-test ---                                                                                                                                                                                                                          
-[INFO] Copying 2 resources from src/main/resources to target/classes                                                                                                                                                                                                                                     
-[INFO]                                                                                                                                                                                                                                                                                                   
-[INFO] --- quarkus:3.4.1:generate-code (default) @ grpc-import-test ---                                                                                                                                                                                                                                  
-role.proto: File not found.                                                                                                                                                                                                                                                                              
-protobuf/base.proto:9:1: Import "role.proto" was not found or had errors.                                                                                                                                                                                                                                
-protobuf/base.proto:18:5: "org.acme.protos.role.Role" is not defined.                                                                                                                                                                                                                                    
-extended.proto:11:1: Import "protobuf/base.proto" was not found or had errors.                                                                                                                                                                                                                           
-extended.proto:15:5: "org.acme.protos.base.User" is not defined.                                                                                                                                                                                                                                         
-extended.proto:16:5: "org.acme.protos.base.Address" is not defined.                                                                                                                                                                                                                                      
-extended.proto:23:5: "org.acme.protos.base.Address" is not defined.                                                                                                                                                                                                                                      
-[INFO] ------------------------------------------------------------------------                                                                                                                                                                                                                          
-[INFO] BUILD FAILURE                                                                                                                                                                                                                                                                                     
-[INFO] ------------------------------------------------------------------------                                                                                                                                                                                                                          
-[INFO] Total time:  1.358 s                                                                                                                                                                                                                                                                              
-[INFO] Finished at: 2023-09-21T16:38:22-04:00                                                                                                                                                                                                                                                            
-[INFO] ------------------------------------------------------------------------                                                                                                                                                                                                                          
-[ERROR] Failed to execute goal io.quarkus.platform:quarkus-maven-plugin:3.4.1:generate-code (default) on project grpc-import-test: Quarkus code generation phase has failed: InvocationTargetException: Failed to generate Java classes from proto files: [/Users/tmulle/NetBeansProjects/grpc-import-test/src/main/proto/extended.proto, /Users/tmulle/NetBeansProjects/grpc-import-test/target/protoc-protos-from-dependencies/a037c3d013f4ac2e4ee551e85514d61e5497c4b6/protobuf/role.proto, /Users/tmulle/NetBeansProjects/grpc-import-test/target/protoc-protos-from-dependencies/a037c3d013f4ac2e4ee551e85514d61e5497c4b6/protobuf/base.proto] to /Users/tmulle/NetBeansProjects/grpc-import-test/target/generated-sources/grpc with command /Users/tmulle/NetBeansProjects/grpc-import-test/target/com.google.protobuf-protoc-osx-aarch_64-exe -I=/Users/tmulle/NetBeansProjects/grpc-import-test/target/protoc-dependencies/2d160609fb74c459975eca766b93d1dc5316867f -I=/Users/tmulle/NetBeansProjects/grpc-import-test/target/protoc-protos-from-dependencies/a037c3d013f4ac2e4ee551e85514d61e5497c4b6 -I=/Users/tmulle/NetBeansProjects/grpc-import-test/src/main/proto --plugin=protoc-gen-grpc=/Users/tmulle/NetBeansProjects/grpc-import-test/target/io.grpc-protoc-gen-grpc-java-osx-aarch_64-exe --plugin=protoc-gen-q-grpc=/Users/tmulle/NetBeansProjects/grpc-import-test/target/quarkus-grpc12223228226746760719.sh --q-grpc_out=/Users/tmulle/NetBeansProjects/grpc-import-test/target/generated-sources/grpc --grpc_out=/Users/tmulle/NetBeansProjects/grpc-import-test/target/generated-sources/grpc --java_out=/Users/tmulle/NetBeansProjects/grpc-import-test/target/generated-sources/grpc /Users/tmulle/NetBeansProjects/grpc-import-test/src/main/proto/extended.proto /Users/tmulle/NetBeansProjects/grpc-import-test/target/protoc-protos-from-dependencies/a037c3d013f4ac2e4ee551e85514d61e5497c4b6/protobuf/role.proto /Users/tmulle/NetBeansProjects/grpc-import-test/target/protoc-protos-from-dependencies/a037c3d013f4ac2e4ee551e85514d61e5497c4b6/protobuf/base.proto -> [Help 1]                                            
-[ERROR]                                                                                                                                                                                                                                                                                                  
-[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.                                                                                                                                                                                                                      
-[ERROR] Re-run Maven using the -X switch to enable full debug logging.                                                                                                                                                                                                                                   
-[ERROR]                                                                                                                                                                                                                                                                                                  
-[ERROR] For more information about the errors and possible solutions, please read the following articles:                                                                                                                                                                                                
-[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoExecutionException     
+(base) ➜  grpc-import-test git:(protobuf-maven-plugin-test) mvn clean compile                                                                                                                                                                                                                            
+[INFO] Scanning for projects...
+[INFO] ------------------------------------------------------------------------
+[INFO] Detecting the operating system and CPU architecture
+[INFO] ------------------------------------------------------------------------
+[INFO] os.detected.name: osx
+[INFO] os.detected.arch: aarch_64
+[INFO] os.detected.bitness: 64
+[INFO] os.detected.version: 13.5
+[INFO] os.detected.version.major: 13
+[INFO] os.detected.version.minor: 5
+[INFO] os.detected.classifier: osx-aarch_64
+[INFO] 
+[INFO] ---------------------< org.acme:grpc-import-test >----------------------
+[INFO] Building grpc-import-test 1.0.0-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- clean:3.2.0:clean (default-clean) @ grpc-import-test ---
+[INFO] Deleting /Users/tmulle/NetBeansProjects/grpc-import-test/target
+[INFO] 
+[INFO] --- protobuf:0.6.1:compile (compile) @ grpc-import-test ---
+[INFO] Building protoc plugin: quarkus-grpc-protoc-plugin
+[INFO] Compiling 1 proto file(s) to /Users/tmulle/NetBeansProjects/grpc-import-test/target/generated-sources/protobuf/java
+[ERROR] PROTOC FAILED: role.proto: File not found.
+protobuf/base.proto:9:1: Import "role.proto" was not found or had errors.
+protobuf/base.proto:18:5: "org.acme.protos.role.Role" is not defined.
+extended.proto:11:1: Import "protobuf/base.proto" was not found or had errors.
+extended.proto:15:5: "org.acme.protos.base.User" is not defined.
+extended.proto:16:5: "org.acme.protos.base.Address" is not defined.
+extended.proto:23:5: "org.acme.protos.base.Address" is not defined.
+
+[ERROR] /Users/tmulle/NetBeansProjects/grpc-import-test/src/main/proto/extended.proto [0:0]: role.proto: File not found.
+protobuf/base.proto:9:1: Import "role.proto" was not found or had errors.
+protobuf/base.proto:18:5: "org.acme.protos.role.Role" is not defined.
+extended.proto:11:1: Import "protobuf/base.proto" was not found or had errors.
+extended.proto:15:5: "org.acme.protos.base.User" is not defined.
+extended.proto:16:5: "org.acme.protos.base.Address" is not defined.
+extended.proto:23:5: "org.acme.protos.base.Address" is not defined.
+
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  0.887 s
+[INFO] Finished at: 2023-09-21T17:29:14-04:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.xolstice.maven.plugins:protobuf-maven-plugin:0.6.1:compile (compile) on project grpc-import-test: protoc did not exit cleanly. Review output for more information. -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException
+  
+```
+
+If I uncomment the `includes` section of the plugin so that I can try to include the correct folders, then the main protos are no longer found
+with the message `No proto files to compile` even though they are still there in the project.
+
+I even tried to set the `protoSourceRoot` to the same as the default, but still same issue.
+
+```xml
+<includes>
+    <include>${project.build.outputDirectory}/**/*.proto</include>
+</includes>
+<protoSourceRoot>src/main/proto</protoSourceRoot>
 ```
 
 
